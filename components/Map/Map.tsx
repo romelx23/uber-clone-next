@@ -2,12 +2,13 @@ import React, { FC, useEffect } from 'react'
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 mapboxgl.accessToken = 'pk.eyJ1Ijoicm9tZWx4MjMiLCJhIjoiY2tzZHA2Y2M0MHQyMjJvbXNsMmVjZW41aCJ9.2As_5QylbPvQj6mFtsHD_g';
-interface Props{
-  pickupCoordinates?:number[];
-  dropOffCoordinates?:number[];
+interface Props {
+  pickupCoordinates?: number[];
+  dropOffCoordinates?: number[];
 }
 
-export const Map:FC<Props> = ({pickupCoordinates,dropOffCoordinates}) => {
+export const Map: FC<Props> = ({ pickupCoordinates, dropOffCoordinates }) => {
+  const popup = new mapboxgl.Popup();
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: "map",
@@ -15,26 +16,29 @@ export const Map:FC<Props> = ({pickupCoordinates,dropOffCoordinates}) => {
       center: [-99.29011, 39.39172],
       zoom: 3
     });
-    if(pickupCoordinates){
-      addToMap(map,pickupCoordinates);
+    if (pickupCoordinates) {
+      addToMap(map, pickupCoordinates);
     }
-    if(dropOffCoordinates){
-      addToMap(map,dropOffCoordinates);
+    if (dropOffCoordinates) {
+      addToMap(map, dropOffCoordinates);
     }
-    if(pickupCoordinates && dropOffCoordinates){
+    if (pickupCoordinates && dropOffCoordinates) {
       map.fitBounds([
-        [pickupCoordinates[0],pickupCoordinates[1]], // southwestern corner of the bounds
+        [pickupCoordinates[0], pickupCoordinates[1]], // southwestern corner of the bounds
         [dropOffCoordinates[0], dropOffCoordinates[1]] // northeastern corner of the bounds
-        ],{
-          padding: 60
-        });
+      ], {
+        padding: 60
+      });
     }
-  }, [pickupCoordinates,dropOffCoordinates]);
+  }, [pickupCoordinates, dropOffCoordinates]);
 
-  const addToMap=(map:mapboxgl.Map,coordinates:number[])=>{
-    const marker1 = new mapboxgl.Marker()
-    .setLngLat([coordinates[0],coordinates[1]])
-    .addTo(map);
+  const addToMap = (map: mapboxgl.Map, coordinates: number[]) => {
+    const marker1 = new mapboxgl.Marker({
+      draggable: true,
+    })
+      .setLngLat([coordinates[0], coordinates[1]])
+      .setPopup(popup)
+      .addTo(map);
   }
 
   return (

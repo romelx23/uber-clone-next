@@ -55,7 +55,10 @@ function Confirm() {
           pickupCoordinates={pickupCoordinates}
           dropOffCoordinates={dropOffCoordinates}
         />
-        <ConfirmMenu />
+        <ConfirmMenu 
+           pickupCoordinates={pickupCoordinates}
+           dropOffCoordinates={dropOffCoordinates}
+        />
       </div>
     </div>
   )

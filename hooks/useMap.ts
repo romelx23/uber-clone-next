@@ -3,9 +3,7 @@ import { Location } from '../interfaces/location.interface';
 
 export const useMap = () => {
   const [pickupCoordinates, setPickupCoordinates] = useState<number[]>([0, 0]);
-  const [dropOffCoordinates, setDropOffCoordinates] = useState<number[]>([
-    0, 0,
-  ]);
+  const [dropOffCoordinates, setDropOffCoordinates] = useState<number[]>([0, 0]);
 
   const getPickUpCoordinates = async (pickup?: string | string[]) => {
     try {

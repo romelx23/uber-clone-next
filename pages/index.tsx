@@ -2,8 +2,38 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { ActionItems } from '../components/ActionItems/ActionItems';
 import { Map } from '../components/Map/Map';
+import { auth } from '../firebase/firebase';
+import { onAuthStateChanged,signOut, User } from 'firebase/auth';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const Home: NextPage = () => {
+  const router=useRouter();
+  const [user,setUser]=useState({
+    displayName: '',
+    email: '',
+    photoURL: '',
+  });
+  useEffect(() => {
+    return onAuthStateChanged(auth,user=>{
+      if(user){
+        setUser({
+          displayName:user.displayName||'',
+          email:user.email || '',
+          photoURL:user.photoURL || '',
+        });
+      }else{
+        setUser({
+          displayName:'',
+          email:'',
+          photoURL:'',
+        })
+        router.push('/login')
+      }
+    })
+  }, [])
+  
+
   return (
     <div>
       <Head>
@@ -14,8 +44,8 @@ const Home: NextPage = () => {
 
       <main className="bg-gray-700 text-white w-full min-h-screen">
         <div className="w-full grid grid-cols-1 grid-rows-2 min-h-screen">
-        <Map/>
-        <ActionItems/>
+          <Map />
+          <ActionItems user={user}/>
         </div>
       </main>
     </div>
